@@ -40,26 +40,28 @@ st.sidebar.markdown("---_---")
 st.sidebar.markdown("**Observação:** A série temporal abaixo considera os filtros de Bioma e Estado selecionados.")
 
 # Visualização da série temporal
-st.subheader(f"Série Temporal da Área Queimada (ha) por Nível 0")
+st.subheader("Série Temporal da Área Queimada (ha) por Nível 0")
 
 if not df_final_filtrado.empty:
     # Agrupar dados por Data e Nível 0, somando a Área Queimada
-    df_serie_temporal = df_final_filtrado.groupby([pd.Grouper(key=
-'Data
-', freq=
-'M
-'), "Nível 0"])["Area_Queimada_ha"].sum().reset_index()
+    df_serie_temporal = df_final_filtrado.groupby(
+        [pd.Grouper(key='Data', freq='M'), "Nível 0"]
+    )["Area_Queimada_ha"].sum().reset_index()
 
-    fig = px.line(df_serie_temporal, x="Data", y="Area_Queimada_ha", color="Nível 0",
-                  title="Área Queimada Mensal por Nível 0 (Antrópico/Natural)",
-                  labels={"Area_Queimada_ha": "Área Queimada (ha)", "Data": "Mês/Ano"})
-    
+    fig = px.line(
+        df_serie_temporal,
+        x="Data",
+        y="Area_Queimada_ha",
+        color="Nível 0",
+        title="Área Queimada Mensal por Nível 0 (Antrópico/Natural)",
+        labels={"Area_Queimada_ha": "Área Queimada (ha)", "Data": "Mês/Ano"}
+    )
+
     fig.update_layout(hovermode="x unified")
     st.plotly_chart(fig, use_container_width=True)
-    
-    st.markdown("### Dados Filtrados")
-    st.dataframe(df_final_filtrado.head(100), height=300) # Mostra as primeiras 100 linhas dos dados filtrados
 
+    st.markdown("### Dados Filtrados")
+    st.dataframe(df_final_filtrado.head(100), height=300)
 else:
     st.warning("Nenhum dado disponível para os filtros selecionados.")
 
